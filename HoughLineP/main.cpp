@@ -2,14 +2,15 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <iostream>
-
+using namespace std;
+using namespace cv;
 int main()
 {
 	cv::Mat mat_gray;
 	cv::Mat mat_binary;
 	cv::Mat mat_canny;
-
-	
+	Mat src;
+	src= cv::imread("D:\\2.png");
 	mat_gray = cv::imread("D:\\2.png", 0);
 
 
@@ -24,23 +25,23 @@ int main()
 
 
 	std::vector<cv::Vec4i> lines;
-	HoughLinesP(mat_canny, lines, 1, CV_PI / 180, 100, 10, 50);
-
-	
+	HoughLinesP(mat_canny, lines, 1, CV_PI / 180, 20, 2, 50);
+	/*
+	Point pt1, pt2;
+	pt1.x = lines[0][0];
+	pt1.y = lines[0][1];
+	pt2.x = lines[0][2];
+	pt2.y = lines[0][3];
+		line(mat_gray, pt1, pt2, Scalar(0, 255, 55), 1, CV_AA);
+	*/
 	for (size_t i = 0; i < lines.size(); i++)
 	{
 		cv::Vec4i& linex = lines[i];
-		/*
-		int dx = linex[2] - linex[0];
-		int dy = linex[2] - linex[1];
-		double angle = atan2(double(dy), dx) * 180 / CV_PI;
-		*/
-
-		line(mat_gray, cv::Point(linex[0], linex[1]), cv::Point(linex[2], linex[3]), cv::Scalar(255, 0, 0), 1);
+		line(src, cv::Point(linex[0], linex[1]), cv::Point(linex[2], linex[3]), cv::Scalar(0, 255, 55), 1);
 	}
 
 
-	cv::imshow("gray", mat_gray);
+	cv::imshow("src", src);
 
 	cv::imshow("dst", mat_canny);
 	cv::waitKey(0);
